@@ -1,7 +1,10 @@
 name: unit test
 on: push
 jobs:
-  build:
+  build-test:
+    name: Build & Test
+     env:
+      PATH: 'Solution1/UnitTest.sln'
     runs-on: ubuntu-latest
     steps:
       -uses: actions/checkout@v3
@@ -10,8 +13,15 @@ jobs:
        with:
         dotnet-version: '6.0.x'
       -name: Install dependencies
-       run: dotnet restore
+       run: dotnet restore $PATH
       -name: Build
-       run: dotnet build
+       run: dotnet build $PATH
       -name: Test with dotnet
-       run: dotnet test 
+       run: dotnet test $PATH
+      -name: Publish Test result
+       uses: dorny/test-reporter@v1
+       if: success() || failure()
+       with:
+        name: Dotnet tests
+        path: "**/test-report.trx"
+        reporter: dotnet-trx
