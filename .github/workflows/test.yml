@@ -2,28 +2,27 @@ name: unit test
 on: push
 jobs:
   build-test:
-    name: Build & Test
-     env:
-      BUILD_CONFIG: 'Release'
-      PATH: 'Solution1/UnitTest.sln'
-     runs-on: ubuntu-latest
-     steps:
-     -uses: actions/checkout@v3
-     -name: Setup dotnet
-      uses: actions/setup-dotnet@v3
-      with:
-       dotnet-version: '6.0.x'
-     -name: Install dependencies
-      run: dotnet restore $PATH
-     -name: Build
-      run: dotnet build $PATH --configuration $BUILD_CONFIG
-     -name: Test with dotnet
-      run: dotnet test $PATH $PATH --configuration $BUILD_CONFIG --logger "trx;LogFileName=test-results.trx" || true
-     -name: Publish Test result
-      uses: dorny/test-reporter@v1
-      if: always()
-      with:
-       name: Dotnet tests
-       path: "**/test-report.trx"
-       reporter: dotnet-trx
-       fail-on-error: true
+    env:
+    BUILD_CONFIG: 'Release'
+    PATH: 'Solution1/UnitTest.sln'
+    runs-on: ubuntu-latest
+    steps:
+    -uses: actions/checkout@v3
+    -name: Setup dotnet
+     uses: actions/setup-dotnet@v3
+     with:
+      dotnet-version: '6.0.x'
+    -name: Install dependencies
+     run: dotnet restore $PATH
+    -name: Build
+     run: dotnet build $PATH --configuration $BUILD_CONFIG
+    -name: Test with dotnet
+     run: dotnet test $PATH $PATH --configuration $BUILD_CONFIG --logger "trx;LogFileName=test-results.trx" || true
+    -name: Publish Test result
+     uses: dorny/test-reporter@v1
+     if: always()
+     with:
+      name: Dotnet tests
+      path: "**/test-report.trx"
+      reporter: dotnet-trx
+      fail-on-error: true
