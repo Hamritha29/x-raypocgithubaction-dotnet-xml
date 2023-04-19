@@ -3,22 +3,22 @@ on: push
 jobs:
   build-test:
     env:
-      BUILD_CONFIG: 'Release'
-      PATH: 'Solution1/UnitTest.sln'
+     BUILD_CONFIG: 'Release'
+     PATH: 'Solution1/UnitTest.sln'
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/checkout@v3
-      -name: Setup dotnet
+      - uses: actions/checkout@v3
+      - name: Setup dotnet
        uses: actions/setup-dotnet@v1
        with:
         dotnet-version: '6.0.x'
-      -name: Install dependencies
+      - name: Install dependencies
        run: dotnet restore $PATH
-      -name: Build
+      - name: Build
        run: dotnet build $PATH --configuration $BUILD_CONFIG
-      -name: Test with dotnet
+      - name: Test with dotnet
        run: dotnet test $PATH $PATH --configuration $BUILD_CONFIG --logger "trx;LogFileName=test-results.trx" || true
-      -name: Publish Test result
+      - name: Publish Test result
        uses: dorny/test-reporter@v1
        if: always()
        with:
