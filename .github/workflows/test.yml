@@ -4,24 +4,23 @@ jobs:
   build-test:
     env:
      BUILD_CONFIG: 'Release'
-     PATH: 'Solution1/UnitTest.sln'
+     SOLUTION: 'Solution1/UnitTest.sln'
   
     runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: master     
+            
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
          dotnet-version: '6.0.x'
       - name: Install dependencies
-        run: dotnet restore $PATH
+        run: dotnet restore $SOLUTION
       - name: Build
-        run: dotnet build $PATH --configuration $BUILD_CONFIG
+        run: dotnet build $SOLUTION --configuration $BUILD_CONFIG
       - name: Test with dotnet
-        run: dotnet test $PATH --configuration $BUILD_CONFIG --logger "trx;LogFileName=test-results.trx" || true
+        run: dotnet test $SOLUTION --configuration $BUILD_CONFIG --logger "trx;LogFileName=test-results.trx" || true
       - name: Publish Test result
         uses: dorny/test-reporter@v1
         if: always()
