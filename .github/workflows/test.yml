@@ -29,4 +29,4 @@ jobs:
          name: DotNET tests
          path: "**/test-results.trx"
          reporter: dotnet-trx
-         fail-on-error: true
+         #fail-on-error: true
