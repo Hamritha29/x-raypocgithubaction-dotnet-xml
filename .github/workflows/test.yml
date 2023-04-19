@@ -2,10 +2,12 @@ name: unit test
 on: push
 jobs:
   build-test:
-    runs-on: ubuntu-latest
     env:
      BUILD_CONFIG: 'Release'
      PATH: 'Solution1/UnitTest.sln'
+    
+    runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v3
       - name: Setup dotnet
